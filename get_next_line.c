@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/01 18:02:49 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/01 20:55:30 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,18 @@
 
 static void	read_fd(int fd, char *buf, char **s)
 {
+	ssize_t	read_bytes;
 
+	if (!s || !ft_strchr(*s, '\n'));
+	{
+				
+	}
+	read_bytes = read(fd, buf, BUFFER_SIZE);
+	if (read_bytes == NULL)
+	{
+		free(buf);
+		return (NULL);
+	}
 }
 
 static char	*separate_str(char **s)
@@ -25,7 +36,6 @@ static char	*separate_str(char **s)
 char	*get_next_line(int fd)
 {
 	static char	*s;
-	ssize_t	read_bytes;
 	char	*buf;
 	char	*result;
 
