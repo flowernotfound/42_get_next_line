@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/01 17:44:37 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/01 18:02:49 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	read_fd(int fd, char *buf, char **s)
 
 }
 
-static char	*sepalate_str(char **s)
+static char	*separate_str(char **s)
 {
 
 }
@@ -34,13 +34,8 @@ char	*get_next_line(int fd)
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buf == NULL)
 		return (NULL);
-	read_bytes = read(fd, buf, BUFFER_SIZE);
-	if (read_bytes == -1)
-	{
-		free(buf);
-		return (NULL);
-	}
 	read_fd(fd, buf, &s);
-	result = sepalate_str(&s)
+	result = separate_str(&s);
+	free(buf);
 	return (result);
 }
