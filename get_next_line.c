@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/02 09:52:18 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/02 09:57:26 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ static int	read_join(int fd, char *buf, char **s)
 {
 	ssize_t	read_bytes;
 	char	*tmp;
-	
+
 	read_bytes = read(fd, buf, BUFFER_SIZE);
 	if (read_bytes == -1)
 		return (-1);
 	if (read_bytes == 0)
 		return (0);
-
 	buf[read_bytes] = '\0';
 	if (*s == NULL)
 	{
@@ -43,30 +42,15 @@ static int	read_join(int fd, char *buf, char **s)
 
 static int	read_fd(int fd, char *buf, char **s)
 {
-	ssize_t	read_bytes;
-	char	*tmp;
+	int	read_check;
 
 	if (*s == NULL || !ft_strchr(*s, '\n'))
 	{
-		read_bytes = read(fd, buf, BUFFER_SIZE);
-		if (read_bytes == -1)
-			return (-1);
-		if (read_bytes == 0)
-			return (0);
-		while (read_bytes > 0)
+		while (1)
 		{
-			buf[read_bytes] = '\0';
-			if (*s == NULL)
-				*s = ft_substr(buf, 0, read_bytes);
-			else
-			{
-				tmp = *s;
-				*s = ft_strjoin(*s, buf);
-				free(tmp);
-			}
-			if (ft_strchr(*s, '\n'))
-				break ;
-			read_bytes = read(fd, buf, BUFFER_SIZE);
+			read_check = read_join(fd, buf, s);
+			if (read_check <= 0 || ft_strchr(*s, '\n'))
+				return (read_check);
 		}
 	}
 	return (1);
