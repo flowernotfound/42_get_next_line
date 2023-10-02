@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/02 09:57:26 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/02 10:18:29 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*separate_str(char **s)
 	sep_length = ft_strlen(ft_strchr(*s, '\n'));
 	result = ft_substr(*s, 0, s_length - sep_length + 1);
 	tmp = *s;
-	*s = ft_substr(*ft_strchr(*s, '\n'), 1, sep_length - 1);
+	*s = ft_substr(ft_strchr(*s, '\n'), 1, sep_length - 1);
 	free(tmp);
 	return (result);
 }
