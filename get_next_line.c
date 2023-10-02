@@ -6,11 +6,20 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/02 10:18:29 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/03 01:28:05 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static void	free_setnull(char **ptr)
+{
+	if (*ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
 
 static int	read_join(int fd, char *buf, char **s)
 {
@@ -34,8 +43,11 @@ static int	read_join(int fd, char *buf, char **s)
 		tmp = *s;
 		*s = ft_strjoin(*s, buf);
 		if (*s == NULL)
+		{
+			free_setnull(&tmp);
 			return (-1);
-		free(tmp);
+		}
+		free_setnull(&tmp);
 	}
 	return (1);
 }
@@ -63,8 +75,11 @@ static char	*separate_str(char **s)
 	ssize_t	s_length;
 	ssize_t	sep_length;
 
-	if (*s == NULL)
+	if (*s == NULL || **s == '\0')
+	{
+		free_setnull(s);
 		return (NULL);
+	}
 	if (ft_strchr(*s, '\n') == NULL)
 	{
 		result = ft_substr(*s, 0, ft_strlen(*s));
@@ -88,7 +103,7 @@ char	*get_next_line(int fd)
 	char		*result;
 	int			read_check;
 
-	if (fd < 0 || BUFFER_SIZE < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buf == NULL)
@@ -96,10 +111,10 @@ char	*get_next_line(int fd)
 	read_check = read_fd(fd, buf, &s);
 	if (read_check == -1 || read_check == 0)
 	{
-		free(buf);
+		free_setnull(&buf);
 		return (NULL);
 	}
 	result = separate_str(&s);
-	free(buf);
+	free_setnull(&buf);
 	return (result);
 }

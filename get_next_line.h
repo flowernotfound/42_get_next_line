@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:47:20 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/02 09:43:03 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/02 23:09:01 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 char	*ft_strchr(char *s, int c);
 ssize_t	ft_strlen(char *s);
+char	*ft_strdup(char *s);
 char	*ft_substr(char *s, ssize_t start, ssize_t length);
 char	*ft_strjoin(char *s, char *buf);
 char	*get_next_line(int fd);
