@@ -6,19 +6,25 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:47:20 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/01 17:21:44 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/02 09:43:03 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+
+char	*ft_strchr(char *s, int c);
+ssize_t	ft_strlen(char *s);
+char	*ft_substr(char *s, ssize_t start, ssize_t length);
+char	*ft_strjoin(char *s, char *buf);
+char	*get_next_line(int fd);
 
 #endif
