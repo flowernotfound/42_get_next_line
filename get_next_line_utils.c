@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:47:34 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/03 13:04:59 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:14:25 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*ft_strdup(char *s)
 	return (result);
 }
 
-char	*ft_substr(char *s, ssize_t start, ssize_t length)
+char	*ft_substr(char *s, unsigned int start, ssize_t length)
 {
 	char	*result;
 	ssize_t	s_length;
@@ -77,7 +77,7 @@ char	*ft_substr(char *s, ssize_t start, ssize_t length)
 	if (result == NULL)
 		return (NULL);
 	i = 0;
-	while (i < length)
+	while (i < length && s[start + i])
 	{
 		result[i] = s[start + i];
 		i++;
