@@ -6,7 +6,7 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/03 13:10:45 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:21:23 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static char	*read_fd(int fd, char *buffer, char **save_fd)
 			return (sep_line(bytes, save_fd));
 		buffer[bytes] = '\0';
 		tmp = ft_strjoin(*save_fd, buffer);
+		if (tmp == NULL)
+			return (NULL);
 		free_setnull(save_fd);
 		*save_fd = tmp;
 		new_line = ft_strchr(*save_fd, '\n');
