@@ -6,115 +6,90 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 19:46:25 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/03 01:28:05 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:10:45 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	free_setnull(char **ptr)
+static void	free_setnull(char **p)
 {
-	if (*ptr != NULL)
+	if (*p != NULL)
 	{
-		free(*ptr);
-		*ptr = NULL;
+		free(*p);
+		*p = NULL;
 	}
 }
 
-static int	read_join(int fd, char *buf, char **s)
+static char	*sep_line(ssize_t bytes_nl, char **save_fd)
 {
-	ssize_t	read_bytes;
 	char	*tmp;
-
-	read_bytes = read(fd, buf, BUFFER_SIZE);
-	if (read_bytes == -1)
-		return (-1);
-	if (read_bytes == 0)
-		return (0);
-	buf[read_bytes] = '\0';
-	if (*s == NULL)
-	{
-		*s = ft_substr(buf, 0, read_bytes);
-		if (*s == NULL)
-			return (-1);
-	}
-	else
-	{
-		tmp = *s;
-		*s = ft_strjoin(*s, buf);
-		if (*s == NULL)
-		{
-			free_setnull(&tmp);
-			return (-1);
-		}
-		free_setnull(&tmp);
-	}
-	return (1);
-}
-
-static int	read_fd(int fd, char *buf, char **s)
-{
-	int	read_check;
-
-	if (*s == NULL || !ft_strchr(*s, '\n'))
-	{
-		while (1)
-		{
-			read_check = read_join(fd, buf, s);
-			if (read_check <= 0 || ft_strchr(*s, '\n'))
-				return (read_check);
-		}
-	}
-	return (1);
-}
-
-static char	*separate_str(char **s)
-{
 	char	*result;
-	char	*tmp;
-	ssize_t	s_length;
-	ssize_t	sep_length;
 
-	if (*s == NULL || **s == '\0')
+	tmp = NULL;
+	if (bytes_nl <= 0)
 	{
-		free_setnull(s);
-		return (NULL);
-	}
-	if (ft_strchr(*s, '\n') == NULL)
-	{
-		result = ft_substr(*s, 0, ft_strlen(*s));
-		free(*s);
-		*s = NULL;
+		if (**save_fd == '\0')
+		{
+			free(*save_fd);
+			*save_fd = NULL;
+			return (NULL);
+		}
+		result = *save_fd;
+		*save_fd = NULL;
 		return (result);
 	}
-	s_length = ft_strlen(*s);
-	sep_length = ft_strlen(ft_strchr(*s, '\n'));
-	result = ft_substr(*s, 0, s_length - sep_length + 1);
-	tmp = *s;
-	*s = ft_substr(ft_strchr(*s, '\n'), 1, sep_length - 1);
-	free(tmp);
+	tmp = ft_substr(*save_fd, bytes_nl, BUFFER_SIZE);
+	result = *save_fd;
+	result[bytes_nl] = '\0';
+	*save_fd = tmp;
 	return (result);
+}
+
+static char	*read_fd(int fd, char *buffer, char **save_fd)
+{
+	ssize_t	bytes;
+	char	*new_line;
+	char	*tmp;
+
+	bytes = 0;
+	new_line = ft_strchr(*save_fd, '\n');
+	tmp = NULL;
+	while (new_line == NULL)
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes <= 0)
+			return (sep_line(bytes, save_fd));
+		buffer[bytes] = '\0';
+		tmp = ft_strjoin(*save_fd, buffer);
+		free_setnull(save_fd);
+		*save_fd = tmp;
+		new_line = ft_strchr(*save_fd, '\n');
+	}
+	return (sep_line(new_line - *save_fd + 1, save_fd));
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*s;
-	char		*buf;
+	static char	*save[FD_MAX + 1];
+	char		*buffer;
 	char		*result;
-	int			read_check;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > FD_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buf == NULL)
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buffer == NULL)
 		return (NULL);
-	read_check = read_fd(fd, buf, &s);
-	if (read_check == -1 || read_check == 0)
+	if (save[fd] == NULL)
 	{
-		free_setnull(&buf);
-		return (NULL);
+		save[fd] = ft_strdup("");
+		if (save[fd] == NULL)
+		{
+			free_setnull(&buffer);
+			return (NULL);
+		}
 	}
-	result = separate_str(&s);
-	free_setnull(&buf);
+	result = read_fd(fd, buffer, &save[fd]);
+	free_setnull(&buffer);
 	return (result);
 }
