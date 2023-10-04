@@ -6,11 +6,11 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 17:52:53 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/03 14:28:17 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:55:02 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strchr(char *s, int c)
 {

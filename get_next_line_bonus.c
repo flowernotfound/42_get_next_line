@@ -6,11 +6,11 @@
 /*   By: hmitsuyo <yourLogin@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/01 17:52:28 by hmitsuyo          #+#    #+#             */
-/*   Updated: 2023/10/03 14:27:29 by hmitsuyo         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:59:03 by hmitsuyo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static void	free_setnull(char **p)
 {
@@ -29,7 +29,7 @@ static char	*sep_line(ssize_t bytes_nl, char **save_fd)
 	tmp = NULL;
 	if (bytes_nl <= 0)
 	{
-		if (**save_fd == '\0')
+		if (*save_fd == NULL || **save_fd == '\0')
 		{
 			free(*save_fd);
 			*save_fd = NULL;
@@ -40,6 +40,8 @@ static char	*sep_line(ssize_t bytes_nl, char **save_fd)
 		return (result);
 	}
 	tmp = ft_substr(*save_fd, bytes_nl, BUFFER_SIZE);
+	if (tmp == NULL)
+		return (NULL);
 	result = *save_fd;
 	result[bytes_nl] = '\0';
 	*save_fd = tmp;
